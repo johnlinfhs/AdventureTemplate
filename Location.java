@@ -32,4 +32,21 @@ public class Location {
             
             return n;
         }
+        public static Location locationInDirection(Location loc, int direction , int move) {
+            Location n = new Location(loc.row, loc.col);    // don't change input!
+            if (direction == NORTH) n.row-=move;
+            if (direction == SOUTH) n.row+=move;
+            if (direction == EAST) n.col+=move;
+            if (direction == WEST) n.col-=move;
+            
+            return n;
+        }
+        public static Location LocationSet ( int row, int col){
+        	Location n = new Location(row, col);
+        	return n;
+        }
+        
+        public boolean equals(Location loc) {
+        	return (this.row == loc.row && this.col == loc.col);
+        }
 }

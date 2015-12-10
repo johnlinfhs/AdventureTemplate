@@ -3,40 +3,63 @@
  * 
  * @author David
  */
-public class Wumpus {
-    private Room currentRoom;		// room the Wumpus is in
-    private int row, col;			// the location of the wumpus in the room
-    
-    public Wumpus(Room r) {
-        currentRoom = r;      
-        row = 6;
-        col = 8;
-        currentRoom.put(row, col, 3);			// THIS IS BAD.  WHY?
+public class Wumpus extends Enemy{
+    public Wumpus(Room r){ 
+    	super(r);
     }
+    public Wumpus(Room r , Location loc){ 
+    	super(r);
+     }
     
     // returns true if enemy was able to move in that direction.
     public boolean move(int direction) {
-        int newrow = row;
-        int newcol = col;
-        
-        if (direction == Location.NORTH) newrow--;
-        if (direction == Location.SOUTH) newrow++;
-        if (direction == Location.EAST) newcol++;
-        if (direction == Location.WEST) newcol--;
-        
-        if (currentRoom.isEmpty(newrow, newcol)) {
-            currentRoom.put(row, col, 0);
-            currentRoom.put(newrow, newcol, 3);
-            row = newrow;
-            col = newcol;
-            return true;
-        }
-        
+    	if(isAlive){
+	    	Location moveTo = Location.locationInDirection(loc, direction);
+	        
+	        if (currentRoom.isEmpty(moveTo.row, moveTo.col)) {
+	            currentRoom.moveElementAt(loc, direction);
+	            loc = moveTo;   // update own location
+	            return true;
+	        }
+    	}
         return false;
     }
     
-    public void randomMove() {
-        // you can fill this one
-        return;
+    public void setIsAlive(boolean a) {
+    	isAlive = a;
     }
+    public boolean getIsAlive(){
+    	return isAlive;
+    }
+    
+    public boolean randomMove() {
+    		int direction = (int)(Math.random() * 4);
+            return move(direction);         
+    }
+    public boolean LargeMove (int direction, int move){
+    	if(isAlive){
+	    	Location moveTo = Location.locationInDirection(loc, direction, move);
+	        
+	        if (currentRoom.isEmpty(moveTo.row, moveTo.col)) {
+	            currentRoom.moveElementAt(loc, direction);
+	            loc = moveTo;   // update own location
+	            return true;
+	        }
+    	}
+        return false;
+    }
+    public boolean randomLargeMove(int move){
+    	int direction = (int)(Math.random() * 4);
+    	return LargeMove(direction, move);    	
+    }
+    
+    public Location getLocation(){
+    	return loc;
+    }
+
+	public String getDisplayString() {
+		return "w";
+	}
+
+    
 }
